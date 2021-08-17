@@ -74,9 +74,16 @@ private extension TweetCollectionViewCell {
     stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding).isActive = true
     stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding).isActive = true
     
+    let teal = UIColor(red: 45/255, green: 174/255, blue: 156/255, alpha: 1)
+    
+    let line = UIView()
+    line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+    line.backgroundColor = teal
+    stackView.addArrangedSubview(line)
+    
     authorLabel = UILabel()
     authorLabel.font = .systemFont(ofSize: 12, weight: .bold)
-    authorLabel.textColor = UIColor(red: 45/255, green: 174/255, blue: 156/255, alpha: 1)
+    authorLabel.textColor = teal
     stackView.addArrangedSubview(authorLabel)
     
     tweetLabel = UILabel()
