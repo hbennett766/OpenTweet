@@ -7,8 +7,6 @@ class TimelineViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-    title = "Timeline"
     
     setUpCollectionView()
     loadTimeline()
