@@ -18,7 +18,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
   }
   
   func configure(with tweet: Tweet) {
-    tweetLabel.text = tweet.content
+    formatTweetLabel(from: tweet.content)
     authorLabel.text = tweet.author
     
     let formatter = DateFormatter()
@@ -26,6 +26,35 @@ class TweetCollectionViewCell: UICollectionViewCell {
     formatter.timeStyle = .short
 
     dateLabel.text = formatter.string(from: tweet.date)
+  }
+}
+
+private extension TweetCollectionViewCell {
+  func formatTweetLabel(from text: String) {
+    let attributedString = NSMutableAttributedString(string: text)
+    let newlinesReplaced = text.replacingOccurrences(of: "\n", with: " ")
+    let words = newlinesReplaced.split(separator: " ")
+    
+    for word in words {
+      if word.starts(with: "@") {
+        let range = (text as NSString).range(of: String(word))
+        attributedString.addAttribute(
+          NSAttributedString.Key.backgroundColor,
+          value: UIColor(red: 45/255, green: 174/255, blue: 156/255, alpha: 0.4),
+          range: range
+        )
+        
+      } else if word.starts(with: "https://") {
+        let range = (text as NSString).range(of: String(word))
+        attributedString.addAttribute(
+          NSAttributedString.Key.foregroundColor,
+          value: UIColor(red: 0/255, green: 128/255, blue: 255/255, alpha: 1),
+          range: range
+        )
+      }
+    }
+    
+    tweetLabel.attributedText = attributedString
   }
 }
 
