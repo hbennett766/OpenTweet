@@ -24,7 +24,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
     let formatter = DateFormatter()
     formatter.dateStyle = .medium
     formatter.timeStyle = .short
-    
+
     dateLabel.text = formatter.string(from: tweet.date)
   }
 }
@@ -35,7 +35,7 @@ private extension TweetCollectionViewCell {
     
     let stackView = UIStackView()
     stackView.axis = .vertical
-    stackView.spacing = 16
+    stackView.spacing = 8
     
     let padding: CGFloat = 16
     contentView.addSubview(stackView)
@@ -45,24 +45,19 @@ private extension TweetCollectionViewCell {
     stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding).isActive = true
     stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding).isActive = true
     
-    tweetLabel = UILabel()
-    tweetLabel.font = .systemFont(ofSize: 16)
-    tweetLabel.textColor = .systemGray
-    stackView.addArrangedSubview(tweetLabel)
-    
-    let authorAndDateStackView = UIStackView()
-    authorAndDateStackView.spacing = 8
-    stackView.addArrangedSubview(authorAndDateStackView)
-    
     authorLabel = UILabel()
     authorLabel.font = .systemFont(ofSize: 12, weight: .bold)
-    authorLabel.textColor = .systemGray5
-    authorAndDateStackView.addArrangedSubview(authorLabel)
+    authorLabel.textColor = UIColor(red: 45/255, green: 174/255, blue: 156/255, alpha: 1)
+    stackView.addArrangedSubview(authorLabel)
+    
+    tweetLabel = UILabel()
+    tweetLabel.font = .systemFont(ofSize: 16)
+    tweetLabel.numberOfLines = 0
+    stackView.addArrangedSubview(tweetLabel)
     
     dateLabel = UILabel()
     dateLabel.font = .systemFont(ofSize: 12)
-    dateLabel.textColor = .systemGray5
-    dateLabel.textAlignment = .right
-    authorAndDateStackView.addArrangedSubview(dateLabel)
+    dateLabel.textColor = .systemGray
+    stackView.addArrangedSubview(dateLabel)
   }
 }
