@@ -3,6 +3,7 @@ import UIKit
 class TimelineViewController: UIViewController {
   
   private var collectionView: UICollectionView!
+  private var threads: [Thread] = []
   private var tweets: [Tweet] = []
 
 	override func viewDidLoad() {
@@ -17,8 +18,9 @@ private extension TimelineViewController {
   func loadTimeline() {
     APIClient.shared.loadTimeline { [weak self] result in
       switch result {
-      case .success(let timeline):
-        self?.tweets = timeline.timeline
+      case .success(let timelineResponse):
+        self?.threads = timelineResponse.threads
+        self?.tweets = timelineResponse.timeline
         self?.collectionView.reloadData()
       case .failure(let error):
         self?.presentErrorAlert(error: error)
@@ -54,6 +56,35 @@ extension TimelineViewController: UICollectionViewDelegate, UICollectionViewData
     cell.configure(with: tweet)
 
     return cell
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let selectedTweet = tweets[indexPath.row]
+    let thread = getThread(for: selectedTweet)
+    
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let threadViewController = storyboard.instantiateViewController(identifier: "ThreadViewController") as! ThreadViewController
+    threadViewController.configure(with: thread, selectedTweet: selectedTweet)
+    
+    navigationController?.pushViewController(threadViewController, animated: true)
+  }
+}
+
+private extension TimelineViewController {
+  func getThread(for selectedTweet: Tweet) -> Thread? {
+    var thread: Thread? = nil
+    
+    switch selectedTweet.threadType {
+    case .root:
+      thread = threads.first { $0.root.id == selectedTweet.id }
+      
+    case .reply:
+      thread = threads.first { t in
+        return t.replies.contains { $0.id == selectedTweet.id }
+      }
+    }
+    
+    return thread
   }
 }
 

@@ -23,7 +23,7 @@ class TweetView: UIView {
     fetchAvatar(from: tweet.avatar)
     formatTweetLabel(from: tweet.content)
     authorLabel.text = tweet.author
-    formatDateLabel(from: tweet.date)
+    dateLabel.text = tweet.dateDisplay
   }
   
   func clearView() {
@@ -74,14 +74,6 @@ private extension TweetView {
     }
     
     tweetLabel.attributedText = attributedString
-  }
-  
-  func formatDateLabel(from date: Date) {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    formatter.timeStyle = .short
-
-    dateLabel.text = formatter.string(from: date)
   }
 }
 

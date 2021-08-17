@@ -113,13 +113,11 @@
 			isa = PBXGroup;
 			children = (
 				009C4C6B1D9F0CD600F0BC6C /* AppDelegate.swift */,
-				009C4C6D1D9F0CD600F0BC6C /* TimelineViewController.swift */,
-				F002F52A26CBE2BB00C3CBBD /* ThreadViewController.swift */,
-				F0CA0C3626CB49BC00DBB53E /* TweetCollectionViewCell.swift */,
-				F002F52C26CC045D00C3CBBD /* TweetView.swift */,
-				F0CA0C3426CB48EF00DBB53E /* Timeline.swift */,
-				F0CA0C3826CB4D6A00DBB53E /* APIClient.swift */,
 				009C4C6F1D9F0CD600F0BC6C /* Main.storyboard */,
+				F002F52E26CC11DB00C3CBBD /* View Controllers */,
+				F002F52F26CC11E300C3CBBD /* Views */,
+				F002F53026CC11E800C3CBBD /* Models */,
+				F002F53126CC11EE00C3CBBD /* API */,
 				009C4C741D9F0CD600F0BC6C /* LaunchScreen.storyboard */,
 				009C4C721D9F0CD600F0BC6C /* Assets.xcassets */,
 				009C4C771D9F0CD600F0BC6C /* Info.plist */,
@@ -151,6 +149,40 @@
 				009C4C9A1D9F0D4100F0BC6C /* timeline.json */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		F002F52E26CC11DB00C3CBBD /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				009C4C6D1D9F0CD600F0BC6C /* TimelineViewController.swift */,
+				F002F52A26CBE2BB00C3CBBD /* ThreadViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		F002F52F26CC11E300C3CBBD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F0CA0C3626CB49BC00DBB53E /* TweetCollectionViewCell.swift */,
+				F002F52C26CC045D00C3CBBD /* TweetView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F002F53026CC11E800C3CBBD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F0CA0C3426CB48EF00DBB53E /* Timeline.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F002F53126CC11EE00C3CBBD /* API */ = {
+			isa = PBXGroup;
+			children = (
+				F0CA0C3826CB4D6A00DBB53E /* APIClient.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
