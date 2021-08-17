@@ -24,12 +24,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
     fetchAvatar(from: tweet.avatar)
     formatTweetLabel(from: tweet.content)
     authorLabel.text = tweet.author
-    
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    formatter.timeStyle = .short
-
-    dateLabel.text = formatter.string(from: tweet.date)
+    formatDateLabel(from: tweet.date)
   }
   
   override func prepareForReuse() {
@@ -82,6 +77,14 @@ private extension TweetCollectionViewCell {
     }
     
     tweetLabel.attributedText = attributedString
+  }
+  
+  func formatDateLabel(from date: Date) {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .short
+
+    dateLabel.text = formatter.string(from: date)
   }
 }
 
