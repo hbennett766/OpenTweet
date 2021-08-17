@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 enum APIError: Error {
   case badPath
@@ -18,6 +18,12 @@ class APIClient {
       completion(result)
     }
   }
+  
+  func loadAvatar(from url: URL, completion: @escaping (UIImage?) -> ()) -> URLSessionDataTask? {
+    return loadImage(from: url) { image in
+      completion(image)
+    }
+  }
 }
 
 private extension APIClient {
@@ -35,5 +41,24 @@ private extension APIClient {
     } catch(let error) {
       completion(.failure(error))
     }
+  }
+  
+  /// Loads image from url
+  func loadImage(from url: URL, completion: @escaping (UIImage?) -> ()) -> URLSessionDataTask? {
+    let task = URLSession.shared.dataTask(with: url) { data, _, error in
+      DispatchQueue.main.async {
+        
+        guard let data = data, error == nil else {
+          completion(nil) // silently fail if error
+          return
+        }
+        
+        let image = UIImage(data: data)
+        completion(image)
+      }
+    }
+    
+    task.resume()
+    return task
   }
 }

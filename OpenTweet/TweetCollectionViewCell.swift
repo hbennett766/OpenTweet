@@ -3,9 +3,12 @@ import UIKit
 class TweetCollectionViewCell: UICollectionViewCell {
   static let reuseID = "TweetCollectionViewCellReuseID"
   
+  private var avatarImageView: UIImageView!
   private var tweetLabel: UILabel!
   private var authorLabel: UILabel!
   private var dateLabel: UILabel!
+  
+  private var imageDataTask: URLSessionDataTask? = nil
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -18,6 +21,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
   }
   
   func configure(with tweet: Tweet) {
+    fetchAvatar(from: tweet.avatar)
     formatTweetLabel(from: tweet.content)
     authorLabel.text = tweet.author
     
@@ -27,9 +31,32 @@ class TweetCollectionViewCell: UICollectionViewCell {
 
     dateLabel.text = formatter.string(from: tweet.date)
   }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    
+    avatarImageView.image = nil
+    imageDataTask?.cancel()
+    tweetLabel.attributedText = nil
+    authorLabel.text = nil
+    dateLabel.text = nil
+  }
 }
 
 private extension TweetCollectionViewCell {
+  func fetchAvatar(from url: URL?) {
+    guard let url = url else {
+      avatarImageView.isHidden = true
+      return
+    }
+    
+    avatarImageView.isHidden = false
+    imageDataTask = APIClient.shared.loadAvatar(from: url, completion: { [weak self] image in
+      self?.avatarImageView.image = image
+      self?.imageDataTask = nil
+    })
+  }
+  
   func formatTweetLabel(from text: String) {
     let attributedString = NSMutableAttributedString(string: text)
     let newlinesReplaced = text.replacingOccurrences(of: "\n", with: " ")
@@ -64,6 +91,7 @@ private extension TweetCollectionViewCell {
     
     let stackView = UIStackView()
     stackView.axis = .vertical
+    stackView.alignment = .leading
     stackView.spacing = 8
     
     let padding: CGFloat = 16
@@ -80,11 +108,25 @@ private extension TweetCollectionViewCell {
     line.heightAnchor.constraint(equalToConstant: 1).isActive = true
     line.backgroundColor = teal
     stackView.addArrangedSubview(line)
+    line.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+    
+    let titleStackView = UIStackView()
+    titleStackView.spacing = 8
+    stackView.addArrangedSubview(titleStackView)
+    
+    avatarImageView = UIImageView()
+    avatarImageView.backgroundColor = .systemGray6
+    avatarImageView.contentMode = .scaleAspectFill
+    avatarImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor).isActive = true
+    avatarImageView.layer.cornerRadius = 15
+    avatarImageView.clipsToBounds = true
+    titleStackView.addArrangedSubview(avatarImageView)
     
     authorLabel = UILabel()
     authorLabel.font = .systemFont(ofSize: 12, weight: .bold)
     authorLabel.textColor = teal
-    stackView.addArrangedSubview(authorLabel)
+    titleStackView.addArrangedSubview(authorLabel)
     
     tweetLabel = UILabel()
     tweetLabel.font = .systemFont(ofSize: 16)
