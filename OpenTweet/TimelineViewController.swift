@@ -9,7 +9,37 @@ class TimelineViewController: UIViewController {
 		super.viewDidLoad()
 		
     title = "Timeline"
+    
+    setUpCollectionView()
+    loadTimeline()
 	}
+}
+
+private extension TimelineViewController {
+  func loadTimeline() {
+    APIClient.shared.loadTimeline { [weak self] result in
+      switch result {
+      case .success(let timeline):
+        self?.tweets = timeline.timeline
+        self?.collectionView.reloadData()
+      case .failure(let error):
+        self?.presentErrorAlert(error: error)
+      }
+    }
+  }
+  
+  func presentErrorAlert(error: Error) {
+    let alertController = UIAlertController(
+      title: "Sorry, something went wrong",
+      message: error.localizedDescription,
+      preferredStyle: .alert
+    )
+    
+    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+    alertController.addAction(okAction)
+    
+    present(alertController, animated: true, completion: nil)
+  }
 }
 
 extension TimelineViewController: UICollectionViewDelegate, UICollectionViewDataSource {
